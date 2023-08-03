@@ -1,0 +1,26 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: epaydb-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      env: epay-db
+  template:
+    metadata:
+      name: epaydb-pod
+      labels:
+        env: epay-db
+    spec:
+      volumes:
+        - name: db-vol
+          persistentVolumeClaim:
+            claimName: epaydb-pvc 
+      containers:
+      - name: database
+        image: jayavayl/epayproject:mysql_v1
+        volumeMounts:
+          - mountPath: /var/lib/mysql
+            name: db-vol
+

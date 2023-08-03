@@ -1,0 +1,26 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: epay-deployment
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      env: epay-frontend
+  template:
+    metadata:
+      name: epayfrontend-pod
+      labels:
+        env: epay-frontend
+    spec:
+      volumes:
+        - name: front-vol
+          persistentVolumeClaim:
+            claimName: epayfrontend-pvc 
+      containers:
+      - name: frontend
+        image: jayavayl/epayproject:web_v1
+        volumeMounts:
+          - mountPath: /var/www/html
+            name: front-vol
+
